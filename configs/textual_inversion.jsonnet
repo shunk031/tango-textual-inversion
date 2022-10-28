@@ -84,7 +84,7 @@ local output_dir = "outputs/textual_inversion_model";
         },
         generate_images: {
             type: "generate_images",
-            textual_inversion_model_path: output_dir,
+            pipe: { type: "ref", ref: "save_pipeline" },
             prompt: "A <cat-toy> backpack",
             seed: seed,
             generated_image_path: "cat-backpack.png",

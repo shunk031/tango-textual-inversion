@@ -21,7 +21,7 @@ class PreprocessedExamples(TypedDict):
 @Step.register("transform_data")
 class TransformData(Step):
     DETERMINISTIC: bool = True
-    CACHEABLE: Optional[bool] = False
+    CACHEABLE: Optional[bool] = True
 
     INTERPOLATION: Dict[str, int] = {
         "linear": PIL.Image.LINEAR,

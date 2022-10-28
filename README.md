@@ -6,10 +6,16 @@
 poetry install
 ```
 
+## Login through `huggingface-cli`
+
+```shell
+poetry run huggingface-cli login
+```
+
 ## Run a tango experiment
 
 ```shell
-poetry run tango run configs/textual_inversion.jsonnet -i textual_inversion/
+poetry run tango run configs/textual_inversion.jsonnet -i textual_inversion/ -w workspace
 ```
 
 ## Examples of generated image
@@ -17,3 +23,12 @@ poetry run tango run configs/textual_inversion.jsonnet -i textual_inversion/
 - Prompt: `A <cat-toy> backpack`
 
 ![](./cat-backpack.png)
+
+
+## Watch the workspace with `tango server`
+
+```shell
+poetry run tango server -w workspace/
+```
+
+![](./tango_server.png)
