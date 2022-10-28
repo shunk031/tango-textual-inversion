@@ -23,3 +23,12 @@ poetry run tango run configs/textual_inversion.jsonnet -i textual_inversion/ -w 
 - Prompt: `A <cat-toy> backpack`
 
 ![](./cat-backpack.png)
+
+
+## Watch the workspace with `tango server`
+
+```shell
+poetry run tango server -w workspace/
+```
+
+![](./tango_server.png)
