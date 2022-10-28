@@ -8,12 +8,12 @@ from tango.integrations.torch.util import resolve_device, set_seed_all
 
 @Step.register("generate_images")
 class GenerateImages(Step):
-    DETERMINISTIC: bool = True
+    DETERMINISTIC: bool = False
     CACHEABLE: Optional[bool] = False
 
     def run(  # type: ignore
         self,
-        textual_inversion_model_path: str,
+        pipe: StableDiffusionPipeline,
         prompt: str,
         seed: int,
         generated_image_path: str,
@@ -26,7 +26,6 @@ class GenerateImages(Step):
         set_seed_all(seed)
         device = resolve_device()
 
-        pipe = StableDiffusionPipeline.from_pretrained(textual_inversion_model_path)
         pipe = pipe.to(device)
 
         images = pipe(

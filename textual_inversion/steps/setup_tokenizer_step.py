@@ -7,7 +7,7 @@ from tango.integrations.transformers import Tokenizer
 @Step.register("setup_tokenizer")
 class SetupTokenizer(Step):
     DETERMINISTIC: bool = True
-    CACHEABLE: Optional[bool] = False
+    CACHEABLE: Optional[bool] = True
 
     def run(  # type: ignore
         self,
