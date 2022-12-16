@@ -9,8 +9,11 @@ from diffusers.pipelines.stable_diffusion import (
     StableDiffusionSafetyChecker as SafetyChecker,
 )
 from tango import Step
+from tango.format import Format
 from transformers import CLIPFeatureExtractor as FeatureExtractor
 from transformers.models.clip import CLIPTextModel
+
+from textual_inversion.integrations.diffusers import DiffusersPipelineFormat
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +34,8 @@ def save_progress(
 class CreatePipeline(Step):
     DETERMINISTIC: bool = True
     CACHEABLE: Optional[bool] = False
+
+    FORMAT: Format = DiffusersPipelineFormat()
 
     def run(  # type: ignore
         self,
@@ -55,7 +60,6 @@ class CreatePipeline(Step):
             safety_checker=SafetyChecker.from_pretrained(safety_checker_name),
             feature_extractor=FeatureExtractor.from_pretrained(feature_extractor_name),
         )
-        pipeline.save_pretrained(output_dir)
 
         # Also save the newly trained embeddings
         save_progress(
