@@ -27,8 +27,8 @@ def save_progress(
     torch.save(learned_embeds_dict, os.path.join(output_dir, "learned_embeds.bin"))
 
 
-@Step.register("save_pipeline")
-class SavePipeline(Step):
+@Step.register("create_pipeline")
+class CreatePipeline(Step):
     DETERMINISTIC: bool = True
     CACHEABLE: Optional[bool] = False
 
