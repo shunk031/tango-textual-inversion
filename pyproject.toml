@@ -2,7 +2,7 @@
 name = "tango-textual-inversion"
 version = "0.1.0"
 description = ""
-authors = ["Shunsuke Kitada <shunsuke.kitada@linecorp.com>"]
+authors = ["Shunsuke Kitada <shunsuke.kitada.0831@gmail.com>"]
 readme = "README.md"
 packages = [{include = "textual_inversion"}]
 
@@ -16,8 +16,7 @@ ftfy = "^6.1.1"
 [[tool.poetry.source]]
 name = "pytorch-cu113"
 url = "https://download.pytorch.org/whl/cu113/"
-secondary = true
-
+priority = "supplemental"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
