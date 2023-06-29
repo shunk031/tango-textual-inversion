@@ -22,7 +22,6 @@ class GenerateImages(Step):
         grid_rows: int = 2,
         grid_cols: int = 4,
     ) -> None:
-
         set_seed_all(seed)
         device = resolve_device()
 

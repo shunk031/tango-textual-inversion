@@ -14,7 +14,6 @@ class SetupTokenizer(Step):
         tokenizer: Tokenizer,
         placeholder_token: str,
     ) -> Tokenizer:
-
         num_added_tokens = tokenizer.add_tokens(placeholder_token)
         if num_added_tokens == 0:
             raise ValueError(

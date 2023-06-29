@@ -23,7 +23,6 @@ class TextualInversionEngine(TorchTrainingEngine):
         max_grad_norm: Optional[float] = None,
         amp_use_bfloat16: Optional[bool] = None
     ) -> None:
-
         super().__init__(
             train_config,
             model,
