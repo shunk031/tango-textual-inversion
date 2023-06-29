@@ -6,6 +6,7 @@ import numpy as np
 import PIL
 import torch
 from PIL import Image
+from PIL.Image import Resampling
 from PIL.Image import Image as PilImage
 from tango import Step
 from tango.integrations.transformers import Tokenizer
@@ -24,10 +25,10 @@ class TransformData(Step):
     CACHEABLE: Optional[bool] = True
 
     INTERPOLATION: Dict[str, int] = {
-        "linear": PIL.Image.LINEAR,
-        "bilinear": PIL.Image.BILINEAR,
-        "bicubic": PIL.Image.BICUBIC,
-        "lanczos": PIL.Image.LANCZOS,
+        "linear": Resampling.NEAREST,
+        "bilinear": Resampling.BILINEAR,
+        "bicubic": Resampling.BICUBIC,
+        "lanczos": Resampling.LANCZOS,
     }
     IMAGENET_TEMPLATES_SMALL: List[str] = [
         "a photo of a {}",
@@ -88,7 +89,6 @@ class TransformData(Step):
         is_center_crop: bool,
         flip_proba: float,
     ) -> torch.Tensor:
-
         if not image_pl.mode == "RGB":
             image_pl = image_pl.convert("RGB")
 
@@ -138,7 +138,6 @@ class TransformData(Step):
         templates: List[str],
         placeholder_string: str,
     ) -> PreprocessedExamples:
-
         preprocessed_examples: PreprocessedExamples = {
             "pixel_values": [
                 self.preprocess_image(
@@ -172,7 +171,6 @@ class TransformData(Step):
         interpolation: str = "bicubic",
         is_center_crop: bool = False,
     ) -> datasets.DatasetDict:
-
         assert isinstance(tokenizer, CLIPTokenizer), tokenizer
         templates = (
             self.IMAGENET_STYLE_TEMPLATES_SMALL
