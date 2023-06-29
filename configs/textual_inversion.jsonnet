@@ -1,4 +1,4 @@
-local model_name = "CompVis/stable-diffusion-v1-4";
+local model_name = "runwayml/stable-diffusion-v1-5";
 
 local placeholder_token = "<cat-toy>";
 local initializer_token = "toy";
@@ -74,17 +74,16 @@ local output_dir = "outputs/textual_inversion_model";
             device_count: devices,
             checkpoint_every: 1000,
         },
-        save_pipeline: {
-            type: "save_pipeline",
+        create_pipeline: {
+            type: "create_pipeline",
+            model_name: model_name,
             model: { type: "ref", ref: "trained_model" },
-            safety_checker_name: "CompVis/stable-diffusion-safety-checker",
-            feature_extractor_name: "openai/clip-vit-base-patch32",
             output_dir: output_dir,
             placeholder_token: placeholder_token,
         },
         generate_images: {
             type: "generate_images",
-            pipe: { type: "ref", ref: "save_pipeline" },
+            pipe: { type: "ref", ref: "create_pipeline" },
             prompt: "A <cat-toy> backpack",
             seed: seed,
             generated_image_path: "cat-backpack.png",

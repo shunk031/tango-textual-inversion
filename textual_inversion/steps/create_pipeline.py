@@ -24,10 +24,16 @@ def save_progress(
     placeholder_token_id: int,
     output_dir: str,
 ) -> None:
-    logger.info("Saving embeddings")
+    if not os.path.exists(output_dir):
+        logger.info(f"Make directory to {output_dir}")
+        os.makedirs(output_dir)
+
     learned_embeds = text_encoder.get_input_embeddings().weight[placeholder_token_id]
     learned_embeds_dict = {placeholder_token: learned_embeds.detach().cpu()}
-    torch.save(learned_embeds_dict, os.path.join(output_dir, "learned_embeds.bin"))
+
+    learned_embeds_path = os.path.join(output_dir, "learned_embeds.bin")
+    logger.info(f"Saving embeddings to {learned_embeds_path}")
+    torch.save(learned_embeds_dict, learned_embeds_path)
 
 
 @Step.register("create_pipeline")
@@ -39,26 +45,17 @@ class CreatePipeline(Step):
 
     def run(  # type: ignore
         self,
+        model_name: str,
         model: nn.Module,
-        safety_checker_name: str,
-        feature_extractor_name: str,
         output_dir: str,
         placeholder_token: str,
     ) -> StableDiffusionPipeline:
-
-        pipeline = StableDiffusionPipeline(
+        pipeline = StableDiffusionPipeline.from_pretrained(
+            model_name,
             text_encoder=model.text_encoder,
             vae=model.vae,
             unet=model.unet,
             tokenizer=model.tokenizer,
-            scheduler=PNDMScheduler(
-                beta_start=0.00085,
-                beta_end=0.012,
-                beta_schedule="scaled_linear",
-                skip_prk_steps=True,
-            ),
-            safety_checker=SafetyChecker.from_pretrained(safety_checker_name),
-            feature_extractor=FeatureExtractor.from_pretrained(feature_extractor_name),
         )
 
         # Also save the newly trained embeddings
