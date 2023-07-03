@@ -18,10 +18,10 @@ class GenerateImages(Step):
         seed: int,
         generated_image_path: str,
         image_size: int = 512,
-        num_images_per_prompt: int = 8,
-        grid_rows: int = 2,
+        grid_rows: int = 1,
         grid_cols: int = 4,
     ) -> None:
+        num_images_per_prompt = grid_rows * grid_cols
 
         set_seed_all(seed)
         device = resolve_device()

@@ -4,9 +4,8 @@ from typing import Dict, Iterable
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from diffusers import DDPMScheduler
-from diffusers.models.unet_2d_condition import UNet2DConditionModel
-from diffusers.models.vae import AutoencoderKL
+from diffusers import DDPMScheduler, UNet2DConditionModel, AutoencoderKL
+
 from tango.integrations.torch.model import Model
 from transformers import CLIPTokenizer
 from transformers.models.clip import CLIPTextModel
@@ -68,7 +67,6 @@ class StableDiffusionModel(Model):
         self.freeze_params()
 
     def get_initializer_token_id(self, initializer_token: str) -> int:
-
         # Convert the initializer_token, placeholder_token to ids
         token_ids = self.tokenizer.encode(initializer_token, add_special_tokens=False)
 
@@ -86,7 +84,6 @@ class StableDiffusionModel(Model):
         self.text_encoder.resize_token_embeddings(len(self.tokenizer))
 
     def initialize_placeholder_token(self) -> None:
-
         # Initialise the newly added placeholder token with the embeddings of the initializer token
         token_embeds = self.text_encoder.get_input_embeddings().weight.data
         token_embeds[self.placeholder_token_id] = token_embeds[
@@ -107,7 +104,6 @@ class StableDiffusionModel(Model):
         freeze_params(params_to_freeze)
 
     def train(self, mode: bool = True) -> "StableDiffusionModel":
-
         self.text_encoder.train(mode=mode)
 
         # Keep vae and unet in eval model as we don't train these
@@ -118,7 +114,6 @@ class StableDiffusionModel(Model):
     def forward(
         self, pixel_values: torch.Tensor, input_ids: torch.Tensor
     ) -> Dict[str, torch.Tensor]:
-
         # Convert image to lantent space
         latents = self.vae.encode(pixel_values).latent_dist.sample().detach()
         latents = latents * self.scale_factor
