@@ -85,6 +85,8 @@ local output_dir = "outputs/textual_inversion_model";
             prompt: "A <cat-toy> backpack",
             seed: seed,
             generated_image_path: "cat-backpack.png",
+            grid_rows: 2,
+            grid_cols: 4,
         },
     },
 }
