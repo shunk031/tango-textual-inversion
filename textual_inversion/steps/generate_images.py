@@ -1,5 +1,6 @@
 from typing import Optional
 
+import torch
 from diffusers import StableDiffusionPipeline
 from PIL import Image
 from tango import Step
@@ -27,11 +28,13 @@ class GenerateImages(Step):
         device = resolve_device()
 
         pipe = pipe.to(device)
+        generator = torch.Generator().manual_seed(seed)
 
         images = pipe(
             prompt=prompt,
             width=image_size,
             height=image_size,
+            generator=generator,
             num_images_per_prompt=num_images_per_prompt,
         ).images
 
