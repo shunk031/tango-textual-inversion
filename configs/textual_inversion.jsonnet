@@ -24,9 +24,7 @@ local output_dir = "outputs/textual_inversion_model";
         },
         raw_data: {
             type: "datasets::load",
-            path: "imagefolder",
-            data_dir: "datasets/textual-inversion",
-            drop_labels: true,
+            path: "diffusers/cat_toy_example",
         },
         transform_data: {
             type: "transform_data",
@@ -87,6 +85,8 @@ local output_dir = "outputs/textual_inversion_model";
             prompt: "A <cat-toy> backpack",
             seed: seed,
             generated_image_path: "cat-backpack.png",
+            grid_rows: 2,
+            grid_cols: 4,
         },
     },
 }
