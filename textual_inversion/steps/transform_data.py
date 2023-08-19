@@ -1,17 +1,18 @@
 import random
-from typing import Dict, List, Optional, TypedDict
+from typing import List, Literal, TypedDict, get_args
 
 import datasets
 import numpy as np
-import PIL
 import torch
+from diffusers.utils import PIL_INTERPOLATION
 from PIL import Image
-from PIL.Image import Resampling
 from PIL.Image import Image as PilImage
 from tango import Step
 from tango.integrations.transformers import Tokenizer
 from torchvision import transforms
 from transformers import CLIPTokenizer
+
+LearnableProperty = Literal["object", "style"]
 
 
 class PreprocessedExamples(TypedDict):
@@ -22,14 +23,7 @@ class PreprocessedExamples(TypedDict):
 @Step.register("transform_data")
 class TransformData(Step):
     DETERMINISTIC: bool = True
-    CACHEABLE: Optional[bool] = True
-
-    INTERPOLATION: Dict[str, int] = {
-        "linear": Resampling.NEAREST,
-        "bilinear": Resampling.BILINEAR,
-        "bicubic": Resampling.BICUBIC,
-        "lanczos": Resampling.LANCZOS,
-    }
+    CACHEABLE: bool = True
     IMAGENET_TEMPLATES_SMALL: List[str] = [
         "a photo of a {}",
         "a rendering of a {}",
@@ -102,7 +96,7 @@ class TransformData(Step):
 
         image_pl = Image.fromarray(image_np)
         image_pl = image_pl.resize(
-            (image_size, image_size), resample=self.INTERPOLATION[interpolation]
+            (image_size, image_size), resample=PIL_INTERPOLATION[interpolation]
         )
         image_pl = transforms.RandomHorizontalFlip(p=flip_proba)(image_pl)
 
@@ -165,13 +159,15 @@ class TransformData(Step):
         dataset: datasets.DatasetDict,
         tokenizer: Tokenizer,
         placeholder_token: str,
-        learnable_property: str = "object",
+        learnable_property: LearnableProperty = "object",
         image_size: int = 512,
         flip_proba: float = 0.5,
         interpolation: str = "bicubic",
         is_center_crop: bool = False,
     ) -> datasets.DatasetDict:
         assert isinstance(tokenizer, CLIPTokenizer), tokenizer
+        assert learnable_property in get_args(LearnableProperty)
+
         templates = (
             self.IMAGENET_STYLE_TEMPLATES_SMALL
             if learnable_property == "style"
