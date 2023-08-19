@@ -8,7 +8,13 @@ packages = [{include = "textual_inversion"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-ai2-tango = {extras = ["all"], version = "^1.2.1"}
+ai2-tango = { extras = [
+    "datasets",
+    "examples",
+    "torch",
+    "transformers",
+    "wandb",
+], version = "^1.2.1" }
 diffusers = ">0.8.0"
 torchvision = "<0.15.0"
 urllib3 = "<2"
