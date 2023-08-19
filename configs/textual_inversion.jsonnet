@@ -3,6 +3,7 @@ local model_name = 'stabilityai/stable-diffusion-2-1-base';
 
 local placeholder_token = '<cat-toy>';
 local initializer_token = 'toy';
+local learnable_property = 'object';
 
 local seed = 19950815;
 local resolution = 512;
@@ -33,9 +34,19 @@ local output_dir = 'outputs/textual_inversion_model';
         transform_data: {
             type: 'transform_data',
             dataset: { type: 'ref', ref: 'raw_data' },
-            tokenizer: { type: 'ref', ref: 'setup_tokenizer' },
-            placeholder_token: placeholder_token,
-            image_size: resolution,
+            example_transformer: {
+                type: 'textual_inversion',
+                image_transformer: {
+                    type: 'textual_inversion',
+                    image_size: resolution,
+                },
+                prompt_transformer: {
+                    type: 'textual_inversion',
+                    placeholder_string: placeholder_token,
+                    tokenizer: { type: 'ref', ref: 'setup_tokenizer' },
+                    learnable_property: learnable_property,
+                },
+            },
         },
         trained_model: {
             type: 'torch::train',
