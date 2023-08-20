@@ -4,7 +4,7 @@ from tango import Step
 from textual_inversion.transforms import TransformExamples
 
 
-@Step.register("transform_data")
+@Step.register("textual_inversion::transform_data")
 class TransformData(Step):
     DETERMINISTIC: bool = True
     CACHEABLE: bool = True

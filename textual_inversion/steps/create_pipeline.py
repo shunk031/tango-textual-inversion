@@ -36,7 +36,7 @@ def save_progress(
     torch.save(learned_embeds_dict, learned_embeds_path)
 
 
-@Step.register("create_pipeline")
+@Step.register("textual_inversion::create_pipeline")
 class CreatePipeline(Step):
     DETERMINISTIC: bool = True
     CACHEABLE: Optional[bool] = False

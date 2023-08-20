@@ -7,7 +7,7 @@ from tango import Step
 from tango.integrations.torch.util import resolve_device, set_seed_all
 
 
-@Step.register("generate_images")
+@Step.register("textual_inversion::generate_images")
 class GenerateImages(Step):
     DETERMINISTIC: bool = False
     CACHEABLE: Optional[bool] = False
