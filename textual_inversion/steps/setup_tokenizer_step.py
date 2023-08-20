@@ -4,7 +4,7 @@ from tango import Step
 from tango.integrations.transformers import Tokenizer
 
 
-@Step.register("setup_tokenizer")
+@Step.register("textual_inversion::setup_tokenizer")
 class SetupTokenizer(Step):
     DETERMINISTIC: bool = True
     CACHEABLE: Optional[bool] = True
