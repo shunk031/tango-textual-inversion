@@ -18,7 +18,7 @@ local output_dir = 'outputs/textual_inversion_model';
     ],
     steps: {
         setup_tokenizer: {
-            type: 'setup_tokenizer',
+            type: 'textual_inversion::setup_tokenizer',
             tokenizer: {
                 type: 'clip',
                 pretrained_model_name_or_path: model_name,
@@ -31,7 +31,7 @@ local output_dir = 'outputs/textual_inversion_model';
             path: 'diffusers/cat_toy_example',
         },
         transform_data: {
-            type: 'transform_data',
+            type: 'textual_inversion::transform_data',
             dataset: { type: 'ref', ref: 'raw_data' },
             example_transformer: {
                 type: 'textual_inversion',
@@ -64,7 +64,7 @@ local output_dir = 'outputs/textual_inversion_model';
                 },
             },
             model: {
-                type: 'stable_diffusion',
+                type: 'textual_inversion::stable_diffusion',
                 model_name: model_name,
                 tokenizer: { type: 'ref', ref: 'setup_tokenizer' },
                 placeholder_token: placeholder_token,
@@ -78,7 +78,7 @@ local output_dir = 'outputs/textual_inversion_model';
                 shuffle: true,
                 batch_size: batch_size,
                 collate_fn: {
-                    type: 'custom_collator',
+                    type: 'textual_inversion::custom_collator',
                 },
             },
             train_steps: train_steps,
@@ -87,14 +87,14 @@ local output_dir = 'outputs/textual_inversion_model';
             checkpoint_every: 1000,
         },
         create_pipeline: {
-            type: 'create_pipeline',
+            type: 'textual_inversion::create_pipeline',
             model_name: model_name,
             model: { type: 'ref', ref: 'trained_model' },
             output_dir: output_dir,
             placeholder_token: placeholder_token,
         },
         generate_images: {
-            type: 'generate_images',
+            type: 'textual_inversion::generate_images',
             pipe: { type: 'ref', ref: 'create_pipeline' },
             prompt: 'A <cat-toy> backpack',
             seed: seed,
