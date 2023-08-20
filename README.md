@@ -15,7 +15,7 @@ poetry run huggingface-cli login
 ## Run a tango experiment
 
 ```shell
-poetry run tango run configs/textual_inversion.jsonnet -i textual_inversion/ -w workspace
+poetry run tango run configs/textual_inversion.jsonnet -w workspace
 ```
 
 ## Examples of generated image
