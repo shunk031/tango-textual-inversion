@@ -1,5 +1,4 @@
-// local model_name = 'runwayml/stable-diffusion-v1-5';
-local model_name = 'stabilityai/stable-diffusion-2-1-base';
+local model_name = 'runwayml/stable-diffusion-v1-5';
 
 local placeholder_token = '<cat-toy>';
 local initializer_token = 'toy';

@@ -26,7 +26,7 @@ class TransformPrompt(Registrable):
         self.placeholder_string = placeholder_string
         self.tokenizer = tokenizer
 
-        assert learnable_property in get_args(LearnableProperty)
+        assert learnable_property in get_args(LearnableProperty), learnable_property
         self.templates = (
             IMAGENET_STYLE_TEMPLATES_SMALL
             if learnable_property == "style"
