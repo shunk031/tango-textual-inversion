@@ -23,7 +23,7 @@ class TransformImage(Registrable):
         self.flip_proba = flip_proba
         self.is_center_crop = is_center_crop
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
+    def __call__(self, image_pl: PilImage) -> Any:
         raise NotImplementedError
 
 
