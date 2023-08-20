@@ -4,8 +4,7 @@ from typing import Dict, Iterable
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from diffusers import DDPMScheduler, UNet2DConditionModel, AutoencoderKL
-
+from diffusers import AutoencoderKL, DDPMScheduler, UNet2DConditionModel
 from tango.integrations.torch.model import Model
 from transformers import CLIPTokenizer
 from transformers.models.clip import CLIPTextModel
@@ -16,7 +15,7 @@ def freeze_params(params: Iterable[nn.Parameter]):
         param.requires_grad = False
 
 
-@Model.register("stable_diffusion")
+@Model.register("textual_inversion::stable_diffusion")
 class StableDiffusionModel(Model):
     def __init__(
         self,

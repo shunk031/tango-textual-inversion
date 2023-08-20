@@ -1,11 +1,10 @@
 from typing import Any, Dict, List
 
+import torch
 from tango.integrations.torch import DataCollator
 
-import torch
 
-
-@DataCollator.register("custom_collator")
+@DataCollator.register("textual_inversion::custom_collator")
 class CustomCollator(DataCollator[Dict[str, Any]]):
     def __call__(self, batch: List[Dict[str, Any]]) -> Dict[str, Any]:
         return {
