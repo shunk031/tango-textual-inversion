@@ -2394,6 +2394,25 @@ files = [
 ]
 
 [[package]]
+name = "tango-extensions"
+version = "0.1.0"
+description = "Extension modules for allenai/tango (ai2-tango)"
+optional = false
+python-versions = ">=3.9,<4.0"
+files = [
+    {file = "tango_extensions-0.1.0-py3-none-any.whl", hash = "sha256:d8c31d74c22afe46d44534bb8d296fa1b4c4edafced3cd4997e4388d9b2cfcbe"},
+    {file = "tango_extensions-0.1.0.tar.gz", hash = "sha256:e2b68832a11ef3d0ebf9fe81a6af5792065d744242f94243428156752888571d"},
+]
+
+[package.dependencies]
+ai2-tango = {version = ">=1.0.0", extras = ["datasets", "examples", "torch", "transformers", "wandb"]}
+urllib3 = "<2"
+
+[package.extras]
+all = ["diffusers[diffusers] (>=0.5.0)"]
+diffusers = ["diffusers[diffusers] (>=0.5.0)"]
+
+[[package]]
 name = "tokenizers"
 version = "0.13.3"
 description = "Fast and Customizable Tokenizers"
@@ -2945,4 +2964,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "c8ecc2fd65b9a33c036de9d09eca5f54fb5ea868fb1655356c27c30252f918d0"
+content-hash = "8fb26b200acaf869f74a8507155f70389be3b316ab7ed0f51f1f9c432cbd7250"
