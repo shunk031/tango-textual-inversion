@@ -7,9 +7,8 @@ import torch.nn as nn
 from diffusers import StableDiffusionPipeline
 from tango import Step
 from tango.format import Format
+from tango_ext.integrations.diffusers import DiffusersPipelineFormat
 from transformers.models.clip import CLIPTextModel
-
-from textual_inversion.integrations.diffusers import DiffusersPipelineFormat
 
 logger = logging.getLogger(__name__)
 
