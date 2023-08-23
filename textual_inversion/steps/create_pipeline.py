@@ -3,17 +3,13 @@ import os
 from typing import Optional
 
 import torch
-import torch.nn as nn
-from diffusers import PNDMScheduler, StableDiffusionPipeline
-from diffusers.pipelines.stable_diffusion import (
-    StableDiffusionSafetyChecker as SafetyChecker,
-)
+from diffusers import StableDiffusionPipeline
 from tango import Step
 from tango.format import Format
-from transformers import CLIPFeatureExtractor as FeatureExtractor
+from tango_ext.integrations.diffusers import DiffusersPipelineFormat
 from transformers.models.clip import CLIPTextModel
 
-from textual_inversion.integrations.diffusers import DiffusersPipelineFormat
+from textual_inversion.models import StableDiffusionModel
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +24,7 @@ def save_progress(
         logger.info(f"Make directory to {output_dir}")
         os.makedirs(output_dir)
 
-    learned_embeds = text_encoder.get_input_embeddings().weight[placeholder_token_id]
+    learned_embeds = text_encoder.get_input_embeddings().weight[placeholder_token_id]  # type: ignore
     learned_embeds_dict = {placeholder_token: learned_embeds.detach().cpu()}
 
     learned_embeds_path = os.path.join(output_dir, "learned_embeds.bin")
@@ -46,10 +42,12 @@ class CreatePipeline(Step):
     def run(  # type: ignore
         self,
         model_name: str,
-        model: nn.Module,
+        model: StableDiffusionModel,
         output_dir: str,
         placeholder_token: str,
     ) -> StableDiffusionPipeline:
+        assert isinstance(model, StableDiffusionModel)
+
         pipeline = StableDiffusionPipeline.from_pretrained(
             model_name,
             text_encoder=model.text_encoder,

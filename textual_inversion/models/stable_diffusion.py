@@ -38,32 +38,30 @@ class StableDiffusionModel(Model):
         )
 
         # load pretrained models
-        self.text_encoder = CLIPTextModel.from_pretrained(
-            model_name,
-            subfolder="text_encoder",
-        )
-        self.vae = AutoencoderKL.from_pretrained(
-            model_name,
-            subfolder="vae",
-        )
-        self.unet = UNet2DConditionModel.from_pretrained(
-            model_name,
-            subfolder="unet",
-        )
+        self.text_encoder = self._load_text_encoder(model_name=model_name)
+        self.vae = self._load_vae(model_name=model_name)
+        self.unet = self._load_unet(model_name=model_name)
 
         # setup noise scheduler
-        self.noise_scheduler = DDPMScheduler(
-            beta_start=0.00085,
-            beta_end=0.012,
-            beta_schedule="scaled_linear",
-            num_train_timesteps=1000,
-        )
+        self.noise_scheduler = self._load_noise_scheduler(model_name=model_name)
 
         # setup the models
         self.resize_token_embeddings()
         self.initialize_placeholder_token()
 
         self.freeze_params()
+
+    def _load_text_encoder(self, model_name: str) -> CLIPTextModel:
+        return CLIPTextModel.from_pretrained(model_name, subfolder="text_encoder")  # type: ignore
+
+    def _load_vae(self, model_name: str) -> AutoencoderKL:
+        return AutoencoderKL.from_pretrained(model_name, subfolder="vae")  # type: ignore
+
+    def _load_unet(self, model_name: str) -> UNet2DConditionModel:
+        return UNet2DConditionModel.from_pretrained(model_name, subfolder="unet")  # type: ignore
+
+    def _load_noise_scheduler(self, model_name: str) -> DDPMScheduler:
+        return DDPMScheduler.from_pretrained(model_name, subfolder="scheduler")  # type: ignore
 
     def get_initializer_token_id(self, initializer_token: str) -> int:
         # Convert the initializer_token, placeholder_token to ids
@@ -76,7 +74,7 @@ class StableDiffusionModel(Model):
         return token_ids[0]
 
     def get_placeholder_token_id(self, placeholder_token: str) -> int:
-        return self.tokenizer.convert_tokens_to_ids(placeholder_token)
+        return self.tokenizer.convert_tokens_to_ids(placeholder_token)  # type: ignore
 
     def resize_token_embeddings(self) -> None:
         # Resize the token embeddings as we are adding new special tokens to the tokenizer
