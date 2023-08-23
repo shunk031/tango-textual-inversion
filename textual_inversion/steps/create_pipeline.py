@@ -3,12 +3,13 @@ import os
 from typing import Optional
 
 import torch
-import torch.nn as nn
 from diffusers import StableDiffusionPipeline
 from tango import Step
 from tango.format import Format
 from tango_ext.integrations.diffusers import DiffusersPipelineFormat
 from transformers.models.clip import CLIPTextModel
+
+from textual_inversion.models import StableDiffusionModel
 
 logger = logging.getLogger(__name__)
 
@@ -41,10 +42,12 @@ class CreatePipeline(Step):
     def run(  # type: ignore
         self,
         model_name: str,
-        model: nn.Module,
+        model: StableDiffusionModel,
         output_dir: str,
         placeholder_token: str,
     ) -> StableDiffusionPipeline:
+        assert isinstance(model, StableDiffusionModel)
+
         pipeline = StableDiffusionPipeline.from_pretrained(
             model_name,
             text_encoder=model.text_encoder,
