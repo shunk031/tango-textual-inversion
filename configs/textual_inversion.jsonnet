@@ -20,7 +20,6 @@ local output_dir = 'outputs/textual_inversion_model';
         setup_tokenizer: {
             type: 'textual_inversion::setup_tokenizer',
             tokenizer: {
-                type: 'clip',
                 pretrained_model_name_or_path: model_name,
                 subfolder: 'tokenizer',
             },

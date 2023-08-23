@@ -1,9 +1,9 @@
 import random
-from typing import Literal, get_args
+from typing import Literal, Union, get_args
 
 import torch
 from tango.common import Registrable
-from transformers import CLIPTokenizer
+from transformers import CLIPTokenizer, CLIPTokenizerFast
 
 from textual_inversion.templates import (
     IMAGENET_STYLE_TEMPLATES_SMALL,
@@ -17,11 +17,11 @@ class TransformPrompt(Registrable):
     def __init__(
         self,
         placeholder_string: str,
-        tokenizer: CLIPTokenizer,
+        tokenizer: Union[CLIPTokenizer, CLIPTokenizerFast],
         learnable_property: LearnableProperty,
     ) -> None:
         super().__init__()
-        assert isinstance(tokenizer, CLIPTokenizer)
+        assert isinstance(tokenizer, (CLIPTokenizer, CLIPTokenizerFast))
 
         self.placeholder_string = placeholder_string
         self.tokenizer = tokenizer
@@ -42,7 +42,7 @@ class TextualInversionTransformPrompt(TransformPrompt):
     def __init__(
         self,
         placeholder_string: str,
-        tokenizer: CLIPTokenizer,
+        tokenizer: Union[CLIPTokenizer, CLIPTokenizerFast],
         learnable_property: LearnableProperty = "object",
     ) -> None:
         super().__init__(placeholder_string, tokenizer, learnable_property)
